@@ -1,0 +1,46 @@
+<!-- Search widget 검색 -->
+                <div class="card mb-4">
+                    <div class="card-header"><i class="fa-solid fa-magnifying-glass"></i> Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input id="search-input" class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                            <button class="btn btn-primary" id="button-search" type="button" onclick="searchPost()">Go!</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 자바스크립트 -->
+                <script>
+                    function searchPost(){
+                        // 검색어
+                        let searchValue = document.getElementById('search-input').value.trim();     // 앞 뒤 공백 제거해서 가져옴
+                        if(searchValue.length > 1){     // 검색어가 한 글자보다 클 때만 검색
+                            location.href = "/blog/search/"+searchValue+"/";
+                        }
+                        else{
+                            alert('검색어('+searchValue+')가 너무 짧습니다!');
+                        }
+                    };
+
+                    // enter 키가 눌렸을 때도 검색
+                    document.getElementById('search-input').addEventListener('keyup', function(event){
+                        if(event.key === 'Enter'){
+                            searchPost();
+                        }
+                    });
+                </script>
+                <!-- Categories widget-->
+                <div class="card mb-4" id="category_card">
+                    <div class="card-header">Categories</div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <ul class="list-unstyled mb-0">
+                                {% for c in categories %}   <!-- views에서 넘겨준 카테고리 -->
+                                <li><a href="{{c.get_absolute_url}}">{{c}} ({{c.post_set.count}})</a></li>
+                                {% endfor %}
+                                <li><a href="/blog/category/no_category/">미분류 ({{no_category_post_count}})</a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>

@@ -1,0 +1,21 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}        <!-- crispy forms에 있는 tags 로드 -->
+{% block head_title %}
+    Create Post - Blog
+{% endblock %}
+
+{% block main_area %}
+    <h1>Create a New Post</h1>
+    <hr />
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}            <!-- csrf 공격을 막기 위해 장고에서 사용하는 토큰..? -->
+        <table>
+            {{form | crispy}}       <!--c rispy form으로 -->
+            <div id="div_id_tags_str">
+                <label for="id_tags">Tags:</label>
+                <input id="id_tags" type="text" name="tags_str" class="textinput textInput form-control">
+            </div>
+        </table>
+        <button type="submit" class="btn btn-primary float-right">Submit</button>
+    </form>
+{% endblock %}

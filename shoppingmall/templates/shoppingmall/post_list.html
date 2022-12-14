@@ -1,0 +1,94 @@
+{% extends 'blog/base.html' %}
+
+{% block main_area %}
+                {% if user.is_authenticated %}  <!-- 인증된 유저이면 -->
+                    {% if user.is_superuser or user.is_staff %}
+                        <a class="btn btn-info float-right" href="/blog/create_post" role="button">
+                            <i class="fas fa-pen">New Post</i>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                <h2>Blog
+                    {% if search_info %}
+                      <span class="badge badge-warning">{{search_info}}</span>
+                    {% endif %}
+                    {% if category %}
+                    : <span class="badge badge-warning">{{category}}</span>
+                    {% endif %}
+                    {% if tag %}
+                    : <span class="badge badge-light">
+                        <i class="fas fa-tag">{{tag}} ({{tag.post_set.count}})</i>
+                      </span>
+                    {% endif %}
+                </h2>
+                <!-- Featured blog post-->
+                {% if post_list.exists %}
+                    {% for p in post_list %}  <!-- 템플릿 문법 -->
+                    <div class="card mb-4" id="post-{{p.pk}}">
+                        {% if p.head_image %}  <!-- 이미지가 있으면 -->
+                        <a href="{{p.get_absolute_url}}"><img class="card-img-top" src="{{p.head_image.url}}" alt="{{p}}의 head_image" /></a>
+                        {% else %}   <!-- 이미지가 없으면 랜덤 이미지 출력 -->
+                        <a href="{{p.get_absolute_url}}"><img class="card-img-top" src="https://picsum.photos/seed/{{p.pk}}/800/200" alt="random image" /></a>
+                        {% endif %}
+                        <div class="card-body">
+                            {% if p.category %}
+                                <span class="badge badge-warning float-right">
+                                    <a href="{{p.category.get_absolute_url}}">
+                                        {{p.category}}
+                                    </a>
+                                </span>
+                            {% else %}
+                                <span class="badge badge-warning float-right">
+                                    <a href="/blog/category/no_category/">
+                                        미분류
+                                    </a>
+                                </span>
+                            {% endif %}
+                            <h2 class="card-title">{{p.title | upper}}</h2>  <!-- 템플릿 필터: upper 영어의 경우 대문자로-->
+                            {% if p.hook_text %}
+                            <h5 class="text-muted"> {{p.hook_text}} </h5>
+                            {% endif %}
+                            <p class="card-text">{{p.content | truncatechars:100}}</p>   <!-- 미리보기 100문자 -->
+                            <!-- 태그 출력 -->
+                            {% if p.tags.exists %}
+                                {% for t in p.tags.iterator %}
+                                    <span class="badge badge-pill badge-light">
+                                        <a href="{{t.get_absolute_url}}" style="color:black">
+                                            <i class="fas fa-tag">{{t}}</i>
+                                        </a>
+                                    </span>
+                                {% endfor %}
+                            {% endif %}
+                            <br><br>
+                            <a class="btn btn-primary" href="{{p.get_absolute_url}}">Read more →</a>
+                        </div>
+                        <div class="card-footer">
+                            <div class="small text-muted">{{p.created_at | date:"Y-m-d h:m:s"}}</div>
+                            <a href="#">{{p.author | upper}}</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <h5>아직 게시물이 없습니다.</h5>
+                {% endif %}
+
+                <!-- Pagination 페이지 목록 -->
+                {% if is_paginated %}                <!-- 포스트 수가 많을 때-->
+                <nav aria-label="Pagination">
+                    <hr class="my-0" />
+                    <ul class="pagination justify-content-center my-4">
+                        {% if page_obj.has_previous %}          <!-- 이전 페이지 목록(page_obj)이 있다면 -->
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Newer</a></li>
+                        {% else %}                              <!-- 이전 페이지 목록이 없으면 이전 페이지로 가는 링크 disabled -->
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                        {% endif %}
+
+                        {% if page_obj.has_next %}              <!-- 다음 페이지 목록이 있다면 -->
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Older</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#!">Older</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+{% endblock %}

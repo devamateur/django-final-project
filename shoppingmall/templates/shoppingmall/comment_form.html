@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}        <!-- crispy forms에 있는 tags 로드 -->
+
+{% block head_title %}
+    Edit Comment - Blog
+{% endblock %}
+
+{% block main_area %}
+    <h1>Edit Comment</h1>
+    <hr />
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}            <!-- csrf 공격을 막기 위해 장고에서 사용하는 토큰..? -->
+            {{form | crispy}}
+
+        <button type="submit" class="btn btn-primary float-right">Submit</button>
+    </form>
+{% endblock %}
