@@ -7,6 +7,9 @@ class Material(models.Model):
     name = models.CharField(max_length=30, unique=True)
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
 
+    def __str__(self):  # 객체에 대한 문자열 리턴
+        return self.name
+
 # Maker, Category - 다대일
 class Maker(models.Model):
     name = models.CharField(max_length=30, unique=True)     # 제조사명
@@ -19,9 +22,16 @@ class Maker(models.Model):
     # 설립년도
     establishment = models.DateField()
 
+    def __str__(self):  # 객체에 대한 문자열 리턴
+        return self.name
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)   # 카테고리는 unique해야 함
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+
+
+    def __str__(self):  # 객체에 대한 문자열 리턴
+        return self.name
 
     class Meta:   # verbose_name_plural은 예약어
         verbose_name_plural = 'Categories'   # admin페이지의 Categorys대신 들어감
@@ -38,7 +48,7 @@ class Toy(models.Model):
     price = models.IntegerField()
 
     # 제조사(다대일)
-    maker = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    maker = models.ForeignKey(Maker, null=True, on_delete=models.SET_NULL)
 
     # 카테고리(다대일)
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
@@ -49,3 +59,8 @@ class Toy(models.Model):
     # 출시년도
     created_at = models.DateTimeField()
 
+    def __str__(self):  # 객체에 대한 문자열 리턴
+        return self.title
+
+    def get_absolute_url(self):
+        return f'/shopping/{self.pk}/'       # 블로그 게시물의 url
