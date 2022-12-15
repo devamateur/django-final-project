@@ -6,7 +6,7 @@ from .models import Toy, Category
 class ToyList(ListView):
     model = Toy
     ordering = '-pk'   # pk로 내림차순으로 정렬(최신순)
-    paginate_by = 5     # 한 페이지에 5개씩 보여줌
+    paginate_by = 6     # 한 페이지에 9개씩 보여줌
 
     # ToyList에서 사용할 데이터를 넘겨줌(여기서는 카테고리)
     def get_context_data(self, *, object_list=None, **kwargs):

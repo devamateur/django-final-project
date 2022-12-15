@@ -48,9 +48,10 @@
                                         </span>
                                     {% endif %}
                                     <h5 class="card-title">{{t.title | upper}}</h5>  <!-- 템플릿 필터: upper 영어의 경우 대문자로-->
-                                    {% if p.hook_text %}
-                                    <h5 class="text-muted"> {{p.hook_text}} </h5>
+                                    {% if t.hook_text %}
+                                    <h6 class="text-muted"> {{t.hook_text}} </h6>
                                     {% endif %}
+                                    <br>
                                     <!-- 재질 해시태그로 출력 -->
                                     {% if t.material.exists %}
                                         {% for t in t.material.iterator %}
@@ -83,15 +84,15 @@
                     <hr class="my-0" />
                     <ul class="pagination justify-content-center my-4">
                         {% if page_obj.has_previous %}          <!-- 이전 페이지 목록(page_obj)이 있다면 -->
-                            <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">Newer</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}" tabindex="-1" aria-disabled="true">이전</a></li>
                         {% else %}                              <!-- 이전 페이지 목록이 없으면 이전 페이지로 가는 링크 disabled -->
-                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a></li>
                         {% endif %}
 
                         {% if page_obj.has_next %}              <!-- 다음 페이지 목록이 있다면 -->
-                            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Older</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">다음</a></li>
                         {% else %}
-                            <li class="page-item disabled"><a class="page-link" href="#!">Older</a></li>
+                            <li class="page-item disabled"><a class="page-link" href="#!">다음</a></li>
                         {% endif %}
                     </ul>
                 </nav>
