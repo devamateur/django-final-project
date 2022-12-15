@@ -23,50 +23,56 @@
                 </h2>
                 <!-- Featured blog post-->
                 {% if toy_list.exists %}
-                    {% for t in toy_list %}  <!-- 템플릿 문법 -->
-                    <div class="card mb-4" id="post-{{t.pk}}" style="width: 18rem;">
-                        {% if t.head_image %}  <!-- 이미지가 있으면 -->
-                        <a href="{{t.get_absolute_url}}"><img class="card-img-top" src="{{t.head_image.url}}" alt="{{t}}의 head_image" /></a>
-                        {% else %}   <!-- 이미지가 없으면 랜덤 이미지 출력 -->
-                        <a href="{{t.get_absolute_url}}"><img class="card-img-top" src="https://picsum.photos/seed/{{t.pk}}/800/200" alt="random image" /></a>
-                        {% endif %}
-                        <div class="card-body">
-                            {% if t.category %}
-                                <span class="badge badge-warning float-right">
-                                    <a href="{{t.category.get_absolute_url}}">
-                                        {{t.category}}
-                                    </a>
-                                </span>
-                            {% else %}
-                                <span class="badge badge-warning float-right">
-                                    <a href="/shopping/category/no_category/">
-                                        미분류
-                                    </a>
-                                </span>
-                            {% endif %}
-                            <h4 class="card-title">{{t.title | upper}}</h4>  <!-- 템플릿 필터: upper 영어의 경우 대문자로-->
-                            {% if t.hook_text %}
-                            <h5 class="text-muted"> {{t.hook_text}} </h5>
-                            {% endif %}
-                            <!-- 태그 출력 -->
-                            {% if t.tags.exists %}
-                                {% for t in t.tags.iterator %}
-                                    <span class="badge badge-pill badge-light">
-                                        <a href="{{t.get_absolute_url}}" style="color:black">
-                                            <i class="fas fa-tag">{{t}}</i>
-                                        </a>
-                                    </span>
-                                {% endfor %}
-                            {% endif %}
-                            <br><br>
-                            <a class="btn btn-primary" href="{{t.get_absolute_url}}">Read more →</a>
+                    <div class="row">
+                        {% for t in toy_list %}  <!-- 템플릿 문법 -->
+
+                        <div class="col-md-4">
+                            <div class="card mb-4" id="post-{{t.pk}}">
+                                {% if t.head_image %}  <!-- 이미지가 있으면 -->
+                                <a href="{{t.get_absolute_url}}"><img class="card-img-top" src="{{t.head_image.url}}" alt="{{t}}의 head_image" /></a>
+                                {% else %}   <!-- 이미지가 없으면 랜덤 이미지 출력 -->
+                                <a href="{{t.get_absolute_url}}"><img class="card-img-top" src="https://picsum.photos/seed/{{t.pk}}/800/200" alt="random image" /></a>
+                                {% endif %}
+                                <div class="card-body">
+                                    {% if t.category %}
+                                        <span class="badge badge-dark float-center">
+                                            <a href="{{t.category.get_absolute_url}}" style="color:white">
+                                                <i class="fa-solid fa-star">{{t.category}}</i>
+                                            </a>
+                                        </span>
+                                    {% else %}
+                                        <span class="badge badge-dark float-center">
+                                            <a href="/shopping/category/no_category/">
+                                                미분류
+                                            </a>
+                                        </span>
+                                    {% endif %}
+                                    <h5 class="card-title">{{t.title | upper}}</h5>  <!-- 템플릿 필터: upper 영어의 경우 대문자로-->
+                                    {% if p.hook_text %}
+                                    <h5 class="text-muted"> {{p.hook_text}} </h5>
+                                    {% endif %}
+                                    <!-- 재질 해시태그로 출력 -->
+                                    {% if t.material.exists %}
+                                        {% for t in t.material.iterator %}
+                                            <span class="badge badge-pill badge-light">
+                                                <a href="{{t.get_absolute_url}}" style="color:black">
+                                                    <i class="fas fa-tag">{{t}}</i>
+                                                </a>
+                                            </span>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br><br>
+                                    <h5 style="color:rgb(153,0,0); text-align:right"><strong>{{t.price}}</strong>원</h5>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="small text-muted">{{t.created_at | date:"Y-m-d h:m:s"}}</div>
+                                    <a href="#">by {{t.maker | upper}}</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer">
-                            <div class="small text-muted">{{t.created_at | date:"Y-m-d h:m:s"}}</div>
-                            <a href="#">{{t.author | upper}}</a>
-                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
+
                 {% else %}
                 <h5>아직 게시물이 없습니다.</h5>
                 {% endif %}
