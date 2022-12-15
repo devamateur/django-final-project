@@ -1,0 +1,76 @@
+{% extends 'shoppingmall/base.html' %}
+
+{% block head_title %}
+    {{toy.title}} - Blog
+{% endblock %}
+
+{% block main_area %}
+                    <!-- Post content-->
+                    <div id="post-area">
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Post title-->
+                            <h2 class="fw-bolder mb-1">{{toy.title | lower}}</h2>
+
+                            {% if toy.hook_text %}
+                            <h5 class="text-muted">{{toy.hook_text}}</h5>
+                            {% endif %}
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">
+                                Posted on {{toy.created_at | date:"Y-m-d h:m:s"}} by {{toy.maker | upper}}
+                            </div>
+                            <!-- Post categories-->
+                            {% if toy.category %}
+                                <span class="badge badge-dark float-center">
+                                    <a href="{{toy.category.get_absolute_url}}" style="color:white">
+                                        <i class="fa-solid fa-star">{{toy.category}}</i>
+                                    </a>
+                                </span>
+                            {% else %}
+                            <a class="badge bg-dark text-decoration-none link-light" href="/shopping/category/no_category">미분류</a>
+                            {% endif %}
+                        </header>
+                        <!-- 로그인한 유저인지, 해당 포스트를 작성한 유지인지 확인-->
+                        <!--{% if user.is_authenticated and user == post.author %}
+                            <a class="btn btn-info float-right" href="/blog/update_post/{{post.pk}}/" role="button">
+                                <i class="fas fa-pen"> Edit Post</i>
+                            </a>
+                        {% endif %} -->
+                        <!-- Preview image figure-->
+                        <figure class="mb-4">
+                            {% if toy.head_image %}
+                            <img class="img-fluid rounded" width="350" src="{{toy.head_image.url}}" alt="{{toy.title}}의 head_image" />
+                            {% else %}
+                            <img class="img-fluid rounded" src="https://picsum.photos/seed/{{toy.pk}}/800/200" alt="random image" />
+                            {% endif %}
+                        </figure>
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">{{toy.content}}</p>
+                            <!-- 태그 출력 -->
+                            {% if toy.material.exists %}
+                                {% for t in toy.material.iterator %}
+                                        <span class="badge badge-pill badge-light">
+                                            <i class="fas fa-tag">
+                                                <a href="{{t.get_absolute_url}}" style="color: black">{{t}}</a>
+                                            </i>
+                                        </span>
+                                {% endfor %}
+                            {% endif %}
+                            <br><br>
+                            <!--{% if toy.file_upload %}
+                            <a href="{{post.file_upload.url}}" class="btn btn-outline-dark" role="button" download>
+                                {% if post.get_file_ext == 'xlsx' or post.get_file_ext == 'xls' %}
+                                <i class="fa-regular fa-file-excel"></i>
+                                {% elif post.get_file_ext == 'docx' or post.get_file_ext == 'doc' %}
+                                <i class="fa-regular fa-file-word"></i>
+                                {% else %}
+                                <i class="fa-regular fa-file"></i>
+                                {% endif %}
+                                Download {{post.get_file_name}}
+                            </a>
+                            {% endif %}-->
+                        </section>
+                    </div>
+
+{% endblock %}
