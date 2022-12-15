@@ -11,15 +11,15 @@
                 <h2>Toy Shop
                     <!--{% if search_info %}
                       <span class="badge badge-warning">{{search_info}}</span>
-                    {% endif %}
-                    {% if category %}
-                    : <span class="badge badge-warning">{{category}}</span>
-                    {% endif %}
-                    {% if tag %}
-                    : <span class="badge badge-light">
-                        <i class="fas fa-tag">{{tag}} ({{tag.post_set.count}})</i>
-                      </span>
                     {% endif %}-->
+                    {% if category %}
+                    : <span class="badge badge-dark">{{category}} ({{category.toy_set.count}})</span>
+                    {% endif %}
+                    {% if material %}
+                    : <span class="badge badge-light">
+                        <i class="fas fa-tag">{{material}} ({{material.toy_set.count}})</i>
+                      </span>
+                    {% endif %}
                 </h2>
                 <!-- Featured blog post-->
                 {% if toy_list.exists %}
@@ -67,7 +67,9 @@
                                 </div>
                                 <div class="card-footer">
                                     <div class="small text-muted">{{t.created_at | date:"Y-m-d h:m:s"}}</div>
-                                    <a href="#">by {{t.maker | upper}}</a>
+
+                                    <a href="{{t.maker.get_absolute_url}}">by {{t.maker | upper}}</a>
+
                                 </div>
                             </div>
                         </div>

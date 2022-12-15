@@ -10,6 +10,9 @@ class Material(models.Model):
     def __str__(self):  # 객체에 대한 문자열 리턴
         return self.name
 
+    def get_absolute_url(self):
+        return f'/shopping/material/{self.slug}/'
+
 # Maker, Category - 다대일
 class Maker(models.Model):
     name = models.CharField(max_length=30, unique=True)     # 제조사명
@@ -25,6 +28,10 @@ class Maker(models.Model):
     def __str__(self):  # 객체에 대한 문자열 리턴
         return self.name
 
+    def get_absolute_url(self):
+        return f'/shopping/maker/{self.pk}/'
+
+
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)   # 카테고리는 unique해야 함
     slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
@@ -35,6 +42,9 @@ class Category(models.Model):
 
     class Meta:   # verbose_name_plural은 예약어
         verbose_name_plural = 'Categories'   # admin페이지의 Categorys대신 들어감
+
+    def get_absolute_url(self):
+        return f'/shopping/category/{self.slug}/'
 
 class Toy(models.Model):
     title = models.CharField(max_length=30)      # 상품명

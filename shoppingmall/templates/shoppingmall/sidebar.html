@@ -36,7 +36,7 @@
 
                             <ul class="list-unstyled mb-0">
                                 {% for c in categories %}   <!-- views에서 넘겨준 카테고리 -->
-                                <li><a href="{{c.get_absolute_url}}">{{c}} ({{c.post_set.count}})</a></li>
+                                <li><a href="{{c.get_absolute_url}}">{{c}} ({{c.toy_set.count}})</a></li>
                                 {% endfor %}
                                 <li><a href="/blog/category/no_category/">미분류 ({{no_category_post_count}})</a></li>
                             </ul>

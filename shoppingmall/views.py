@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from .models import Toy, Category
+from .models import Toy, Category, Material, Maker
 
 # Create your views here.
 class ToyList(ListView):
@@ -22,3 +22,41 @@ class ToyDetail(DetailView):
 
     # 템플릿 -> post_detail.html이 자동으로 불려짐
     # 전달되는 매개변수: 모델명 -> post
+
+def category_page(request, slug):
+    if slug == 'no_category':
+        category = '미분류'
+        toy_list = Toy.objects.filter(category=None)
+    else:
+        # 특정 slug를 갖는 카테고리
+        category = Category.objects.get(slug=slug)
+        toy_list = Toy.objects.filter(category=category)
+
+    return render(request, 'shoppingmall/toy_list.html', {
+        'category': category,
+        'toy_list': toy_list,
+        'categories': Category.objects.all(),
+        'no_category_post_count': Toy.objects.filter(category=None).count
+    })
+
+def material_page(request, slug):
+    material = Material.objects.get(slug=slug)
+    toy_list = material.toy_set.all()          # tag값을 가진 포스트 집합
+
+    return render(request, 'shoppingmall/toy_list.html', {
+        'material': material,
+        'toy_list': toy_list,
+        'categories': Category.objects.all(),
+        'no_category_post_count': Toy.objects.filter(category=None).count
+    })
+
+def maker_page(request, pk):
+    maker = Maker.objects.get(pk=pk)
+    toy_list = maker.toy_set.all()          # tag값을 가진 포스트 집합
+
+    return render(request, 'shoppingmall/toy_list.html', {
+        'maker': maker,
+        'toy_list': toy_list,
+        'categories': Category.objects.all(),
+        'no_category_post_count': Toy.objects.filter(category=None).count
+    })
