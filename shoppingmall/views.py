@@ -1,6 +1,96 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import render, redirect
+from django.utils.text import slugify
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Toy, Category, Material, Maker
+
+class ToyUpdate(LoginRequiredMixin, UpdateView):
+    model = Toy
+    fields = ['title', 'hook_text', 'content', 'head_image', 'price', 'maker', 'category']
+    template_name = 'shoppingmall/toy_update_form.html'      # 템플릿을 호출
+
+    # 포스트를 작성한 유저 확인
+    def dispatch(self, request, *args, **kwargs):
+        # request 유저와 post를 작성한 유저가 같은지 확인
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            return super(ToyUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied          # PermissionDenied exception 발생시킴
+
+    # post방식으로 전달하면 form_valid()가 필요함
+    def form_valid(self, form):
+        response = super(ToyUpdate, self).form_valid(form)
+        self.object.material.clear()
+        tags_str = self.request.POST.get('tags_str')  # toy_form의 tags_str을 가져옴
+        if tags_str:
+            tags_str = tags_str.strip()  # 문자열의 앞 뒤 공백 제거
+            tags_str = tags_str.replace(',', ';')  # 구분자(delimiter) ;로 통일
+            tags_list = tags_str.split(';')  # ex) 'internet; programming;' -> 'internet' 'programming'
+
+            for t in tags_list:
+                t = t.strip()
+                tag, is_tag_created = Material.objects.get_or_create(name=t)  # 문자열에 해당하는 태그 객체 없으면 create, 있으면 가져옴
+                if is_tag_created:
+                    tag.slug = slugify(t, allow_unicode=True)  # 새로 생성된 태그의 경우, 슬러그 생성
+                    tag.save()
+                self.object.material.add(tag)
+        return response
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ToyUpdate, self).get_context_data()
+
+        # 기존 post에 tag가 있는 경우
+        if self.object.material.exists:
+            tag_str_list = list()
+            for t in self.object.material.all():
+                tag_str_list.append(t.name)
+            context['tags_str_default'] = ';'.join(tag_str_list)
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Toy.objects.filter(category=None).count
+
+        return context
+
+class ToyCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Toy
+    fields = ['title', 'hook_text', 'content', 'head_image', 'price', 'maker', 'category', 'material']
+
+    # 모델명_form.html이 자동으로 호출
+
+    # 슈퍼유저 or 스태프유저에게 접근권한 부여(모델에 대한)
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
+    def form_valid(self, form):
+        current_user = self.request.user            # 현재 post를 생성하는 유저
+        if current_user.is_authenticated and \
+                (current_user.is_superuser or self.request.user.is_staff):            # 해당 유저가 인증된 유저이면
+            form.instance.author = current_user     # 폼의 authorm를 해당 유저로
+            response = super(ToyCreate, self).form_valid(form)
+            tags_str = self.request.POST.get('tags_str')     # toy_form의 tags_str을 가져옴
+
+            if tags_str:
+                tags_str = tags_str.strip()     # 문자열의 앞 뒤 공백 제거
+                tags_str = tags_str.replace(',', ';')      # 구분자(delimiter) ;로 통일
+                tags_list = tags_str.split(';')            # ex) 'internet; programming;' -> 'internet' 'programming'
+
+                for t in tags_list:
+                    t = t.strip()
+                    tag, is_tag_created = Material.objects.get_or_create(name=t)       # 문자열에 해당하는 태그 객체 없으면 create 있으면 가져옴
+                    if is_tag_created:
+                        tag.slug = slugify(t, allow_unicode=True)           # 새로 생성된 태그의 경우, 슬러그 생성
+                        tag.save()
+                    self.object.tags.add(tag)
+            return response
+        else:
+            return redirect('/shopping/')        #인증되지 않은 사용자일 경우 그냥 redirect
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ToyCreate, self).get_context_data()
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Toy.objects.filter(category=None).count
+
+        return context
 
 # Create your views here.
 class ToyList(ListView):

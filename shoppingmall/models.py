@@ -47,7 +47,7 @@ class Category(models.Model):
         return f'/shopping/category/{self.slug}/'
 
 class Toy(models.Model):
-    title = models.CharField(max_length=30)      # 상품명
+    title = models.CharField(max_length=40)      # 상품명
     hook_text = models.CharField(max_length=100, blank=True)   # 미리보기 텍스트
     content = models.TextField()
 
@@ -65,9 +65,10 @@ class Toy(models.Model):
 
     # 재질 (다대다)
     material = models.ManyToManyField(Material, blank=True)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     # 출시년도
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):  # 객체에 대한 문자열 리턴
         return self.title

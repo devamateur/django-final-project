@@ -1,18 +1,18 @@
-{% extends 'blog/base.html' %}
+{% extends 'shoppingmall/base.html' %}
 {% load crispy_forms_tags %}        <!-- crispy forms에 있는 tags 로드 -->
 
 {% block head_title %}
-    Update Post - Blog
+    Update Post
 {% endblock %}
 
 {% block main_area %}
-    <h1>Update Post</h1>
+    <h1 class="mt-3">Update Post</h1>
     <hr />
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}            <!-- csrf 공격을 막기 위해 장고에서 사용하는 토큰..? -->
             {{form | crispy}}
-            <div id="div_id_tags_str">
-                <label for="id_tags">Tags:</label>
+            <div id="div_id_tags_str" class="mt-3">
+                <label for="id_tags">Materials:</label>
                 <input id="id_tags" type="text" name="tags_str" value="{{tags_str_default}}"
                        class="textinput textInput form-control">
             </div>

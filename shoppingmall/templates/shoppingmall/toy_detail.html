@@ -18,6 +18,7 @@
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">
                                 Posted on {{toy.created_at | date:"Y-m-d h:m:s"}} by {{toy.maker | upper}}
+                                <h5 style="color:rgb(153,0,0); text-align:right"><strong>{{toy.price}}</strong>원</h5>
                             </div>
                             <!-- Post categories-->
                             {% if toy.category %}
@@ -31,11 +32,12 @@
                             {% endif %}
                         </header>
                         <!-- 로그인한 유저인지, 해당 포스트를 작성한 유지인지 확인-->
-                        <!--{% if user.is_authenticated and user == post.author %}
-                            <a class="btn btn-info float-right" href="/blog/update_post/{{post.pk}}/" role="button">
+                        {% if user.is_authenticated and user == toy.author %}
+                            <a class="btn btn-info float-right" href="/shopping/update_toy/{{toy.pk}}/" role="button">
                                 <i class="fas fa-pen"> Edit Post</i>
                             </a>
-                        {% endif %} -->
+                        {% endif %}
+
                         <!-- Preview image figure-->
                         <figure class="mb-4">
                             {% if toy.head_image %}

@@ -1,14 +1,14 @@
 {% extends 'shoppingmall/base.html' %}
 
 {% block main_area %}
-                <!--{% if user.is_authenticated %}
+                {% if user.is_authenticated %}
                     {% if user.is_superuser or user.is_staff %}
-                        <a class="btn btn-info float-right" href="/shopping/create_post" role="button">
+                        <a id="create-button" class="btn btn-info float-right" href="/shopping/create_toy" role="button">
                             <i class="fas fa-pen">New Post</i>
                         </a>
                     {% endif %}
-                {% endif %} -->
-                <h2 class="mt-3">Toys
+                {% endif %}
+                <h2 id="toy-list-title" class="mt-3">Toys
                     <!--{% if search_info %}
                       <span class="badge badge-warning">{{search_info}}</span>
                     {% endif %}-->
