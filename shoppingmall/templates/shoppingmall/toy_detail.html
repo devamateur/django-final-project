@@ -17,7 +17,8 @@
                             {% endif %}
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">
-                                Posted on {{toy.created_at | date:"Y-m-d h:m:s"}} by {{toy.maker | upper}}
+                                Posted on {{toy.created_at | date:"Y-m-d h:m:s"}}
+                                <a href="{{toy.maker.get_absolute_url}}">by {{toy.maker}}</a>
                                 <h5 style="color:rgb(153,0,0); text-align:right"><strong>{{toy.price}}</strong>원</h5>
                             </div>
                             <!-- Post categories-->

@@ -1,3 +1,4 @@
+{% load socialaccount %}
 {% load static %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
@@ -60,7 +61,7 @@
                     <div class="row">
                         <div class="col-6">
                             <a role="button" class="btn btn-outline-dark btn-block btn-sm"
-                                href="#">    <!-- 구글 로그인 -->
+                                href="{% provider_login_url 'google' %}">    <!-- 구글 로그인 -->
                                 <i class="fa-brands fa-google"></i> Login With Google</a>
                             <a role="button" class="btn btn-outline-dark btn-block btn-sm"
                                 href="/accounts/login/">

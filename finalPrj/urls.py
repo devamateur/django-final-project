@@ -23,6 +23,7 @@ urlpatterns = [
     path('shopping/', include('shoppingmall.urls')),
 
     path('', include('single_pages.urls')),  # 대문
+    path('accounts/', include('allauth.urls'))
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

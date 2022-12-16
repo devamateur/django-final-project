@@ -75,3 +75,11 @@ class Toy(models.Model):
 
     def get_absolute_url(self):
         return f'/shopping/{self.pk}/'       # 블로그 게시물의 url
+
+    def get_avatar_url(self):
+
+        # 소셜 로그인한 유저의 경우
+        if self.author.socialaccount_set.exists():
+            return self.author.socialaccount_set.first().get_avatar_url()        # 구글 아바타를 가져옴
+        else:
+            return 'https://dummyimage.com/50x50/ced4da/6c757d.jpg'
