@@ -21,5 +21,8 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('shopping/', include('shoppingmall.urls')),
+
+    path('', include('single_pages.urls')),  # 대문
+
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
