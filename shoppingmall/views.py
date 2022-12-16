@@ -20,8 +20,11 @@ class ToyList(ListView):
 class ToyDetail(DetailView):
     model = Toy
 
-    # 템플릿 -> post_detail.html이 자동으로 불려짐
-    # 전달되는 매개변수: 모델명 -> post
+    def get_context_data(self, **kwargs):
+        context = super(ToyDetail, self).get_context_data()
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Toy.objects.filter(category=None).count
+        return context
 
 def category_page(request, slug):
     if slug == 'no_category':
