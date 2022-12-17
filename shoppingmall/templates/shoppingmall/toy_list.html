@@ -16,7 +16,11 @@
                       <span class="badge badge-warning">{{search_info}}</span>
                     {% endif %}-->
                     {% if category %}
-                    : <span class="badge badge-dark">{{category}} ({{category.toy_set.count}})</span>
+                        {% if category == '미분류' %}
+                        : <span class="badge badge-secondary">{{category}} ({{no_category_post_count}})</span>
+                        {% else %}
+                        : <span class="badge badge-dark">{{category}} ({{category.toy_set.count}})</span>
+                        {% endif %}
                     {% endif %}
                     {% if material %}
                     : <span class="badge badge-light">
@@ -45,8 +49,8 @@
                                             </a>
                                         </span>
                                     {% else %}
-                                        <span class="badge badge-dark float-center">
-                                            <a href="/shopping/category/no_category/">
+                                        <span class="badge badge-secondary float-center">
+                                            <a href="/shopping/category/no_category" style="color:white">
                                                 미분류
                                             </a>
                                         </span>
