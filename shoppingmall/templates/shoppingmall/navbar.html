@@ -24,7 +24,11 @@
                 </ul>
                 <ul class="navbar-nav ml-auto">   <!-- ml-auto: margin-left를 auto값으로(최대)-->
                     {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mypage/">My Page</a>
+                    </li>
                     <li class="nav-item dropdown">
+
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {% if user.socialaccount_set.all.0.get_avatar_url %}   <!-- all.0(=first): 전체 중 제일 앞(0번째)-->
                                 <img class="rounded-circle mr-3" src="{{user.socialaccount_set.all.0.get_avatar_url}}" width="25px"/>

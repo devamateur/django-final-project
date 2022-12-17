@@ -21,8 +21,7 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('shopping/', include('shoppingmall.urls')),
-
-    path('', include('single_pages.urls')),  # 대문
+    path('', include('single_pages.urls')),  # 대문, about_us, mypage
     path('accounts/', include('allauth.urls'))
 
 ]
