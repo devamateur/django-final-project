@@ -8,3 +8,6 @@ def landing(request):
     return render(request, 'single_pages/landing.html', {
         'recent_toys': recent_toy,
     })
+
+def about_us(request):
+    return render(request, 'single_pages/about_us.html')
