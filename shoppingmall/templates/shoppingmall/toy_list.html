@@ -3,7 +3,7 @@
 {% block main_area %}
                 {% if user.is_authenticated %}
                     {% if user.is_superuser or user.is_staff %}
-                        <a id="create-button" class="btn btn-info float-right" href="/shopping/create_toy" role="button">
+                        <a id="create-button" class="btn btn-info float-right mt-3" href="/shopping/create_toy" role="button">
                             <i class="fas fa-pen">New Post</i>
                         </a>
                     {% endif %}

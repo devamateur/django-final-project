@@ -10,6 +10,8 @@ urlpatterns = [
     path('maker/<int:pk>/', views.maker_page),
 
     path('create_toy/', views.ToyCreate.as_view()),
-    path('update_toy/<int:pk>/', views.ToyUpdate.as_view()),  # post의 pk
-
+    path('update_toy/<int:pk>/', views.ToyUpdate.as_view()),
+    path('<int:pk>/new_comment/', views.new_comment),  # 댓글
+    path('update_comment/<int:pk>/', views.CommentUpdate.as_view()),  # comment의 pk
+    path('delete_comment/<int:pk>/', views.delete_comment),
 ]

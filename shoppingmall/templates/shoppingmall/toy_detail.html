@@ -1,7 +1,8 @@
 {% extends 'shoppingmall/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block head_title %}
-    {{toy.title}} - Blog
+    {{toy.title}}
 {% endblock %}
 
 {% block main_area %}
@@ -74,6 +75,92 @@
                             </a>
                             {% endif %}-->
                         </section>
+                    </div>
+
+                    <!-- Comments section-->
+                    <div id="comment-area" class="mb-5">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <!-- Comment form-->
+
+                                    {% if user.is_authenticated %}      <!-- 로그인한 유저만 댓글 달 수 있음 -->
+                                        <form class="mb-4" id="comment-form" method="post" action="{{toy.get_absolute_url}}new_comment/">
+                                            {% csrf_token %}
+                                            <div class="form-group">
+                                                {{comment_form | crispy}}       <!-- view에서 전달받은 comment_form -->
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </form>
+                                    {% else %}
+                                        <a role="button" class="btn btn-dark btn-block btn-sm"
+                                            href="#" data-toggle="modal" data-target="#loginModal">
+                                            Log in and Leave a comment
+                                        </a>
+                                    {% endif %}
+
+
+                                {% if toy.comment_set.exists %}
+                                {% for comment in toy.comment_set.iterator %}
+                                <!-- Single comment-->
+                                <div class="media d-flex" id="comment-{{comment.pk}}">
+                                    <img class="rounded-circle mr-3" src="{{comment.get_avatar_url}}" alt="{{comment.author}}" width="60px" />
+                                    <div class="media-body ms-3">
+                                        <!-- 해당 댓글을 작성한 사용자에게만 수정 및 삭제 권한 부여 -->
+                                        {% if user.is_authenticated and comment.author == user%}
+                                            <div class="float-right">
+                                                <a role="button" class="btn btn-small btn-info float-right"
+                                                    href="/shopping/update_comment/{{comment.pk}}/">
+                                                    Edit
+                                                </a>
+                                                <a role="button" class="btn btn-small btn-danger float-right"
+                                                   data-toggle="modal" data-target="#deleteModal-{{comment.pk}}"
+                                                    href="#">
+                                                    Delete
+                                                </a>
+                                            </div>
+                                        <!-- 삭제 알림창 -->
+                                        <div class="modal fade" id="deleteModal-{{comment.pk}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <del>{{comment | linebreaks}}</del>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <a role="button" class="btn btn-danger"
+                                                            href="/shopping/delete_comment/{{comment.pk}}/">
+                                                            Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {% endif %}
+                                        <div class="fw-bold">
+                                            {{comment.author.username}}
+                                            <small class="text_muted">{{comment.created_at}}</small>
+                                        </div>
+                                        <p>{{comment.댓글 | linebreaks}}</p>
+
+                                        <!-- 댓글이 수정됐다면 -->
+                                        {% if comment.created_at != comment.modified_at %}
+                                            <p class="text-muted float-right">
+                                                <small>Updated: {{comment.modified_at}}</small>
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
 
 {% endblock %}

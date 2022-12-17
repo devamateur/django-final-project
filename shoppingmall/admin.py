@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Toy, Maker, Category, Material
+from .models import Toy, Maker, Category, Material, Comment
 # Register your models here.
 
 admin.site.register(Toy)
@@ -11,3 +11,4 @@ class MaterialAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}   # 카테고리가 자동으로 slug로 만들어짐?
 admin.site.register(Material, MaterialAdmin)
 admin.site.register(Maker)
+admin.site.register(Comment)
