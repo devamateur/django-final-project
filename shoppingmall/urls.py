@@ -14,4 +14,7 @@ urlpatterns = [
     path('<int:pk>/new_comment/', views.new_comment),  # 댓글
     path('update_comment/<int:pk>/', views.CommentUpdate.as_view()),  # comment의 pk
     path('delete_comment/<int:pk>/', views.delete_comment),
+
+    path('search/<str:q>/', views.ToySearch.as_view()),     # 검색
+
 ]

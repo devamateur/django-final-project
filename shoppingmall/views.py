@@ -6,6 +6,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Toy, Category, Material, Maker, Comment
 from .forms import CommentForm
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 class ToyUpdate(LoginRequiredMixin, UpdateView):
     model = Toy
@@ -201,3 +202,22 @@ def maker_page(request, pk):
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })
+
+# 검색
+class ToySearch(ToyList):
+    paginate_by = None
+
+    def get_queryset(self):
+        q = self.kwargs['q']            # 검색어(query)를 가져 옴
+
+        # 포스트 제목과 내용에 대해 검색
+        toy_list = Toy.objects.filter(Q(title__contains=q) | Q(content__contains=q)).distinct()
+
+        return toy_list
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ToySearch, self).get_context_data()
+        q = self.kwargs['q']
+        context['search_info'] = f'{q}'
+        context['search_count'] = f'{self.get_queryset().count()}'
+        return context

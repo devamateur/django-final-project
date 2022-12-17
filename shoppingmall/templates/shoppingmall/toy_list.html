@@ -9,12 +9,11 @@
                     {% endif %}
                 {% endif %}
                 {% if maker %}
-                <h2 id="maker-title" class="mt-3">제조사: {{maker}} ({{maker.toy_set.count}})</h2>
+                    <h2 id="maker-title" class="mt-3">제조사: {{maker}} ({{maker.toy_set.count}})</h2>
+                {% elif search_info %}
+                    <h2 id="search-title" class="mt-3"><strong>'{{search_info}}'</strong>에 대한 검색결과({{search_count}})</h2>
                 {% else %}
                 <h2 id="toy-list-title" class="mt-3">Toys
-                    <!--{% if search_info %}
-                      <span class="badge badge-warning">{{search_info}}</span>
-                    {% endif %}-->
                     {% if category %}
                         {% if category == '미분류' %}
                         : <span class="badge badge-secondary">{{category}} ({{no_category_post_count}})</span>

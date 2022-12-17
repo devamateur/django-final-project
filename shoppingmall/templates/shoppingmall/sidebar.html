@@ -1,5 +1,5 @@
 <!-- Search widget 검색 -->
-                <div class="card mb-4">
+                <div class="card mb-4 mt-3">
                     <div class="card-header"><i class="fa-solid fa-magnifying-glass"></i> Search</div>
                     <div class="card-body">
                         <div class="input-group">
@@ -14,7 +14,7 @@
                         // 검색어
                         let searchValue = document.getElementById('search-input').value.trim();     // 앞 뒤 공백 제거해서 가져옴
                         if(searchValue.length > 1){     // 검색어가 한 글자보다 클 때만 검색
-                            location.href = "/blog/search/"+searchValue+"/";
+                            location.href = "/shopping/search/"+searchValue+"/";
                         }
                         else{
                             alert('검색어('+searchValue+')가 너무 짧습니다!');
@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <div class="row">
 
-                            <ul class="list-unstyled mb-0">
+                            <ul class="list-unstyled ml-3 mb-0">
                                 {% for c in categories %}   <!-- views에서 넘겨준 카테고리 -->
                                 <li><a href="{{c.get_absolute_url}}">{{c}} ({{c.toy_set.count}})</a></li>
                                 {% endfor %}
