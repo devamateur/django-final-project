@@ -8,6 +8,9 @@
                         </a>
                     {% endif %}
                 {% endif %}
+                {% if maker %}
+                <h2 id="maker-title" class="mt-3">제조사: {{maker}} ({{maker.toy_set.count}})</h2>
+                {% else %}
                 <h2 id="toy-list-title" class="mt-3">Toys
                     <!--{% if search_info %}
                       <span class="badge badge-warning">{{search_info}}</span>
@@ -21,6 +24,7 @@
                       </span>
                     {% endif %}
                 </h2>
+                {% endif %}
                 <!-- Featured blog post-->
                 {% if toy_list.exists %}
                     <div class="row">
