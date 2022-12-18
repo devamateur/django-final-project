@@ -64,11 +64,11 @@ class ToyCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     # 슈퍼유저 or 스태프유저에게 접근권한 부여(모델에 대한)
     def test_func(self):
-        return self.request.user.is_superuser or self.request.user.is_staff or self.request.user.is_authenticated
+        return self.request.user.is_superuser or self.request.user.is_staff
 
     def form_valid(self, form):
         current_user = self.request.user            # 현재 post를 생성하는 유저
-        if current_user.is_authenticated or \
+        if current_user.is_authenticated and \
                 (current_user.is_superuser or self.request.user.is_staff):            # 해당 유저가 인증된 유저이면
             form.instance.author = current_user     # 폼의 authorm를 해당 유저로
             response = super(ToyCreate, self).form_valid(form)
