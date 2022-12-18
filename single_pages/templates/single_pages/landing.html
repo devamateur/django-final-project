@@ -58,9 +58,16 @@
                                             {{toy.title}}
                                         </a>
                                     </h6>
-                                    <a href="{{toy.get_absolute_url}}" class="text-decoration-none text-dark">
-                                        <img class="card-img-top" height="250" src="{{toy.head_image.url}}" alt="{{toy}}의 head_image" />
-                                    </a>
+                                    {% if toy.head_image %}
+                                        <a href="{{toy.get_absolute_url}}" class="text-decoration-none text-dark">
+                                            <img class="card-img-top" height="250" src="{{toy.head_image.url}}" alt="{{toy}}의 head_image" />
+                                        </a>
+                                    {% else %}
+                                        <a href="{{toy.get_absolute_url}}" class="text-decoration-none text-dark">
+                                            <img class="img-fluid rounded" src="https://picsum.photos/seed/{{toy.pk}}/300/250" alt="random image" />
+                                        </a>
+                                    {% endif %}
+
                                     <h5 style="color:rgb(153,0,0); text-align:right"><strong>{{toy.price}}</strong>원</h5>
                                 </div>
                             </div>

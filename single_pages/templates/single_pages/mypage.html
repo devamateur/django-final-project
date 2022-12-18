@@ -60,7 +60,12 @@
                     <div class="col-4 mt-3">
                             <div class="card" data-toggle="modal" data-target="#portfolio2">
                                 <a href="{{toy.get_absolute_url}}" style="text-decoration: none; color: black;">
+                                    {% if toy.head_image %}
                                     <img class="card-img-top" src="{{toy.head_image.url}}">
+                                    {% else %}   <!-- 이미지가 없으면 랜덤 이미지 출력 -->
+                                    <img class="card-img-top" src="https://picsum.photos/seed/{{toy.pk}}/350/350" alt="random image" />
+                                    {% endif %}
+
                                     <div class="card-body">
                                         <h5>{{toy.title}}</h5>
                                         <p>{{toy.created_at | date:"Y-m-d h:m:s"}}</p>
