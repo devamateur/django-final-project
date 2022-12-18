@@ -66,7 +66,8 @@
                         <div class="col-6">
                             <a role="button" class="btn btn-outline-dark btn-block btn-sm"
                                 href="{% provider_login_url 'google' %}">    <!-- 구글 로그인 -->
-                                <i class="fa-brands fa-google"></i> Login With Google</a>
+                                <i class="fa-brands fa-google"></i> Login With Google
+                            </a>
                             <a role="button" class="btn btn-outline-dark btn-block btn-sm"
                                 href="/accounts/login/">
                                 <i class="fa-solid fa-envelope"></i> Login With Email
@@ -76,6 +77,10 @@
                             <a role="button" class="btn btn-outline-dark btn-block btn-sm"
                                 href="/accounts/signup/">
                                 <i class="fa-solid fa-envelope"></i> SignUp With Email
+                            </a>
+                            <a role="button" class="btn btn-outline-dark btn-block btn-sm"
+                                href="{% provider_login_url 'naver' %}">    <!-- 네이버 로그인 -->
+                                Login With Naver
                             </a>
                         </div>
                     </div>

@@ -104,6 +104,9 @@ class Comment(models.Model):
 
         # 소셜 로그인한 유저의 경우
         if self.author.socialaccount_set.exists():
-            return self.author.socialaccount_set.first().get_avatar_url()        # 구글 아바타를 가져옴
+            if self.author.socialaccount_set.first().get_avatar_url() is not None:
+                return self.author.socialaccount_set.first().get_avatar_url()       # 아바타를 가져옴
+            else:
+                return 'https://dummyimage.com/50x50/ced4da/6c757d.jpg'
         else:
             return 'https://dummyimage.com/50x50/ced4da/6c757d.jpg'
