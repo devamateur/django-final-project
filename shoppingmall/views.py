@@ -50,6 +50,7 @@ class ToyUpdate(LoginRequiredMixin, UpdateView):
                 tag_str_list.append(t.name)
             context['tags_str_default'] = ';'.join(tag_str_list)
         context['categories'] = Category.objects.all()
+        context['makers'] = Maker.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
         return context
@@ -90,6 +91,7 @@ class ToyCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ToyCreate, self).get_context_data()
+        context['makers'] = Maker.objects.all()
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
@@ -104,6 +106,7 @@ class ToyList(ListView):
     # ToyList에서 사용할 데이터를 넘겨줌(여기서는 카테고리)
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ToyList, self).get_context_data()
+        context['makers'] = Maker.objects.all()
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
@@ -116,6 +119,7 @@ class ToyDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ToyDetail, self).get_context_data()
         context['categories'] = Category.objects.all()
+        context['makers'] = Maker.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
         context['comment_form'] = CommentForm
         return context
@@ -177,6 +181,7 @@ def category_page(request, slug):
     return render(request, 'shoppingmall/toy_list.html', {
         'category': category,
         'toy_list': toy_list,
+        'makers': Maker.objects.all(),
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })
@@ -188,6 +193,7 @@ def material_page(request, slug):
     return render(request, 'shoppingmall/toy_list.html', {
         'material': material,
         'toy_list': toy_list,
+        'makers': Maker.objects.all(),
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })
@@ -199,6 +205,7 @@ def maker_page(request, pk):
     return render(request, 'shoppingmall/toy_list.html', {
         'maker': maker,
         'toy_list': toy_list,
+        'makers': Maker.objects.all(),
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })

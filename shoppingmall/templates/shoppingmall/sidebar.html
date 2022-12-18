@@ -44,3 +44,18 @@
                         </div>
                     </div>
                 </div>
+                <!-- Makers widget-->
+                <div class="card mb-4" id="maker_card">
+                    <div class="card-header">Makers</div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <ul class="list-unstyled ml-3 mb-0">
+                                {% for maker in makers %}   <!-- views에서 넘겨준 제조사 -->
+                                <li><a href="{{maker.get_absolute_url}}">{{maker}} ({{maker.toy_set.count}})</a></li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
