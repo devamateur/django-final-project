@@ -51,6 +51,7 @@ class ToyUpdate(LoginRequiredMixin, UpdateView):
             context['tags_str_default'] = ';'.join(tag_str_list)
         context['categories'] = Category.objects.all()
         context['makers'] = Maker.objects.all()
+        context['materials'] = Material.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
         return context
@@ -91,7 +92,9 @@ class ToyCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ToyCreate, self).get_context_data()
+
         context['makers'] = Maker.objects.all()
+        context['materials'] = Material.objects.all()
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
@@ -107,6 +110,7 @@ class ToyList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ToyList, self).get_context_data()
         context['makers'] = Maker.objects.all()
+        context['materials'] = Material.objects.all()
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
@@ -120,6 +124,7 @@ class ToyDetail(DetailView):
         context = super(ToyDetail, self).get_context_data()
         context['categories'] = Category.objects.all()
         context['makers'] = Maker.objects.all()
+        context['materials'] = Material.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
         context['comment_form'] = CommentForm
         return context
@@ -142,6 +147,7 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CommentUpdate, self).get_context_data()
         context['makers'] = Maker.objects.all()
+        context['materials'] = Material.objects.all()
         context['categories'] = Category.objects.all()
         context['no_category_post_count'] = Toy.objects.filter(category=None).count
 
@@ -189,6 +195,7 @@ def category_page(request, slug):
         'category': category,
         'toy_list': toy_list,
         'makers': Maker.objects.all(),
+        'materials': Material.objects.all(),
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })
@@ -201,6 +208,7 @@ def material_page(request, slug):
         'material': material,
         'toy_list': toy_list,
         'makers': Maker.objects.all(),
+        'materials': Material.objects.all(),
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })
@@ -213,6 +221,7 @@ def maker_page(request, pk):
         'maker': maker,
         'toy_list': toy_list,
         'makers': Maker.objects.all(),
+        'materials': Material.objects.all(),
         'categories': Category.objects.all(),
         'no_category_post_count': Toy.objects.filter(category=None).count
     })

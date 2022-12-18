@@ -59,3 +59,18 @@
                         </div>
                     </div>
                 </div>
+                <!-- Materials widget-->
+                <div class="card mb-4" id="material_card">
+                    <div class="card-header">Materials</div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <ul class="list-unstyled ml-3 mb-0">
+                                {% for m in materials %}   <!-- views에서 넘겨준 제조사 -->
+                                <li><a href="{{m.get_absolute_url}}">{{m}} ({{m.toy_set.count}})</a></li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
