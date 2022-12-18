@@ -47,10 +47,63 @@
 
     <section class="margin-for-footer">
         <div class="container mt-5">
+            {% if toy_list.exists %}
+                <div class="row">
+                    <div class="col-12">
+                        <h3>내가 작성한 포스트<i class="fa-regular fa-pen-to-square ml-1"></i></h3>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+
+                    {% for toy in toy_list %}
+                    <div class="col-4 mt-3">
+                            <div class="card" data-toggle="modal" data-target="#portfolio2">
+                                <a href="{{toy.get_absolute_url}}" style="text-decoration: none; color: black;">
+                                    <img class="card-img-top" src="{{toy.head_image.url}}">
+                                    <div class="card-body">
+                                        <h5>{{toy.title}}</h5>
+                                        <p>{{toy.created_at | date:"Y-m-d h:m:s"}}</p>
+
+                                        {% if toy.category %}
+                                            <span class="badge badge-dark float-center">
+                                                {{toy.category}}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-secondary float-center">
+                                                미분류
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </a>
+
+                            </div>
+
+                    </div>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+            <div class="row">
+                    <div class="col-12">
+                        <h3>내가 작성한 포스트<i class="fa-regular fa-pen-to-square ml-1"></i></h3>
+                    </div>
+            </div>
+            <hr>
+            <div class="row">
+                    <div class="col-12">
+                        <h5>아직 작성한 포스트가 없어요😢</h5>
+                    </div>
+            </div>
+            {% endif %}
+
+        </div>
+        <br><br>
+        <div class="container mt-5">
             {% if comment.exists %}
                 <div class="row">
                     <div class="col-12">
-                        <h3>내가 작성한 댓글</h3>
+                        <h3>내가 작성한 댓글<i class="fa-regular fa-comment ml-1"></i></h3>
                     </div>
                 </div>
                 <hr>
@@ -76,7 +129,13 @@
             {% else %}
             <div class="row">
                     <div class="col-12">
-                        <h3>아직 작성한 댓글이 없어요😢</h3>
+                        <h3>내가 작성한 댓글<i class="fa-regular fa-comment ml-1"></i></h3>
+                    </div>
+                </div>
+            <hr>
+            <div class="row">
+                    <div class="col-12">
+                        <h5>아직 작성한 댓글이 없어요😢</h5>
                     </div>
             </div>
             {% endif %}
