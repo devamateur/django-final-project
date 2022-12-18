@@ -38,7 +38,7 @@
                             {% endif %}
                         </header>
                         <!-- 로그인한 유저인지, 해당 포스트를 작성한 유지인지 확인-->
-                        {% if user.is_authenticated and user == toy.author %}
+                        {% if user.is_authenticated and (user.is_superuser or user.is_staff) and user == toy.author %}
                             <a class="btn btn-info float-right" href="/shopping/update_toy/{{toy.pk}}/" role="button">
                                 <i class="fas fa-pen"> Edit Post</i>
                             </a>

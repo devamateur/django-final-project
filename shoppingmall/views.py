@@ -16,7 +16,8 @@ class ToyUpdate(LoginRequiredMixin, UpdateView):
     # 포스트를 작성한 유저 확인
     def dispatch(self, request, *args, **kwargs):
         # request 유저와 post를 작성한 유저가 같은지 확인
-        if request.user.is_authenticated and request.user == self.get_object().author:
+        if request.user.is_authenticated and (self.request.user.is_superuser or self.request.user.is_staff)\
+                and request.user == self.get_object().author:
             return super(ToyUpdate, self).dispatch(request, *args, **kwargs)
         else:
             raise PermissionDenied          # PermissionDenied exception 발생시킴
