@@ -138,7 +138,14 @@ class CommentUpdate(LoginRequiredMixin, UpdateView):
         else:
             raise PermissionDenied          # PermissionDenied exception 발생시킴
 
-    # 템플릿 이름: comment_form
+    # ToyList에서 사용할 데이터를 넘겨줌(여기서는 카테고리)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CommentUpdate, self).get_context_data()
+        context['makers'] = Maker.objects.all()
+        context['categories'] = Category.objects.all()
+        context['no_category_post_count'] = Toy.objects.filter(category=None).count
+
+        return context
 
 # 댓글 등록하는 메소드
 def new_comment(request, pk):
